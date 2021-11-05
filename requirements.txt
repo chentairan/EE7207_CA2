@@ -1,0 +1,5 @@
+casadi
+matplotlib==3.4.2
+numpy==1.20.3
+scikit_fuzzy==0.4.2
+tqdm==4.62.3

@@ -23,7 +23,7 @@ u_{COG}=\frac{\int \limits_{U} u_{i}\mu_{U_{i}}(u_{i})du_{i} }{\int \limits_{U} 
 $$
 Based on the fuzzy rule, I draw the **control space** of fuzzy system shown in Fig. 1.1.
 
-<img src="./image/control_space.png" alt="control_space" style="zoom:20%;" />
+<img src="./image/control_space.png" alt="control_space"  />
 
 <center>Fig. 1.1 Control space of the fuzzy system<center>
 
@@ -82,19 +82,17 @@ More implementation details can be found in the source code: [opt.py](https://gi
 
 In this subsection, the results of three different controller with different initial states are shown in Fig 1.2-5.
 
-<img src="./image/init1.png" alt="xy" style="zoom:18%;" />
+<img src="./image/init1.png" alt="xy"  />
 
 <center>Fig. 1.2 Initial state 1, top-left: x-y, top-right: y-t, bottom-left: &theta;-t, bottom-right: u-t<center>
-
-<img src="./image/init2.png" alt="y" style="zoom:18%;" />
+<img src="./image/init2.png" alt="y"  />
 
 <center>Fig. 1.3 Initial state 2, top-left: x-y, top-right: y-t, bottom-left: &theta;-t, bottom-right: u-t<center>
-
-<img src="./image/init3.png" alt="theta" style="zoom:18%;" />
+<img src="./image/init3.png" alt="theta"  />
 
 <center>Fig. 1.4 Initial state 3, top-left: x-y, top-right: y-t, bottom-left: &theta;-t, bottom-right: u-t<center>
 
-<img src="./image/init4.png" alt="u" style="zoom:18%;" />
+<img src="./image/init4.png" alt="u"  />
 
 <center>Fig. 1.5 Initial state 4, top-left: x-y, top-right: y-t, bottom-left: &theta;-t, bottom-right: u-t<center>
 

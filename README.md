@@ -8,13 +8,13 @@ Source code: [https://github.com/chentairan/EE7207_CA2](https://github.com/chent
 
 ## Abstract
 
-This report shows the solution process and experimental results of two problems of fuzzy control and clustering with theoretical analysis. **In the fuzzy control problem**, the given fuzzy system is firstly modeled and the simulation environment is constructed to simulate the fuzzy control under four initial conditions. Secondly, a classical model predictive controller is designed and implemented. Then an optimal controller in this environment is explored and compared with the fuzzy logic controller. **In the clustering problem**, firstly the fuzzy tolerance relation $R_{1}$ and fuzzy equivalence relation $R$ are calculated separately using the definition in the question. After that, $\alpha$-cut $R_{\alpha}$ are calculated when the $\alpha$-cut levels are 0.4 and 0.8, respectively, and the corresponding classification classes are found. Finally, the appropriate $\alpha$-cut value range to classify the flooding for the whole country into 3 classes is given.
+This report shows the solution process and experimental results of two problems of fuzzy control and clustering with theoretical analysis. **In the fuzzy control problem**, the given fuzzy system is firstly modeled and the simulation environment is constructed to simulate the **Fuzzy Control** under four initial conditions. Secondly, classical **P Controller** and **Model Predictive Controller** are designed and implemented. Then an **Optimal Controller** in this environment is explored and compared with the fuzzy logic controller. **In the clustering problem**, firstly the fuzzy tolerance relation $R_{1}$ and fuzzy equivalence relation $R$ are calculated separately using the definition in the question. After that, $\alpha$-cut $R_{\alpha}$ are calculated when the $\alpha$-cut levels are 0.4 and 0.8, respectively, and the corresponding classification classes are found. Finally, the appropriate $\alpha$-cut value range to classify the flooding for the whole country into 3 classes is given.
 
 ## I. Fuzzy Control
 
-In this part, I implement fuzzy controller, model predictive controller and optimal controller and make an analysis of the control performance of all three.
+In this part, I implement Fuzzy Controller, P controller, Model Predictive Controller and Optimal Controller and make an analysis of the control performance of all four.
 
-### A. Design and simulation of fuzzy logic controller
+### A. Design and simulation of Fuzzy Logic Controller
 
 I construct the fuzzy system by **Python** according to the variable ranges, membership functions and fuzzy rules given in the question. Member functions are composed of **trapezoidal** and **triangular** functions. Afterwards, according to the defuzzification **Equation 1.1** given in the question, the output action $u$ is obtained.
 $$
@@ -25,7 +25,8 @@ Based on the fuzzy rule, I draw the **control space** of fuzzy system shown in F
 
 <img src="./image/control_space.png" alt="control_space"  />
 
-<center>Fig. 1.1 Control space of the fuzzy system<center>
+<center><b>Fig. 1.1 Control space of the fuzzy system</b></center>
+
 
 More implementation details can be found in the source code: [fuzzy.py](https://github.com/chentairan/EE7207_CA2/blob/master/fuzzy.py)
 
@@ -38,11 +39,22 @@ y(k+1) = y(k) + vTsin(\theta(k))
 $$
 More implementation details can be found in the source code: [model.py](https://github.com/chentairan/EE7207_CA2/blob/master/model.py)
 
-### B. Classical Model Predictive Control
+### B. P Controller
 
-In this subsection, I design mpc to accomplish this control task. The problem is defined as shown in **Equation 1.3**.
+In this subsection, I try a simple P control to drive the truck. The output is defined as shown in **Equation 1.3**.
 $$
 \tag{1.3}
+u = K_{y}y_{error} + K_{\theta}\theta_{error}
+$$
+By trying and improving, I finally set $K_y = -0.2, K_{\theta}= -0.16$.
+
+More implementation details can be found in the source code: [pid.py](https://github.com/chentairan/EE7207_CA2/blob/master/pid.py)
+
+### C. Model Predictive Controller
+
+In this subsection, I design mpc to accomplish this control task. The problem is defined as shown in **Equation 1.4**.
+$$
+\tag{1.4}
 \mathop{minimize}\limits_{u_1,u_2,...,u_N, x_1,x_2,...,x_{N+1}} q_1(y_N^2+\theta_N^2)+q_2\sum_{k=0}^{N-1} y_k^{2} + \theta_k^2\\
 subject \; to \quad \bold{x_{k+1}} = F(\bold{x_k}, u_k) \quad k=0...N,\\
 \bold{x_0}=init\_state\\
@@ -57,11 +69,11 @@ I define and solve the problem by $$Casadi^{[1]}$$, where I try the case of N=10
 
 More implementation details can be found in the source code: [mpc.py](https://github.com/chentairan/EE7207_CA2/blob/master/mpc.py)
 
-### C. Optimal Control
+### D. Optimal Control
 
-Further I explore the optimal solution of this control task, so I define the following problem as shown in Equation 1.4.
+Further I explore the optimal solution of this control task, so I define the following problem as shown in **Equation 1.5**.
 $$
-\tag{1.4}
+\tag{1.5}
 \mathop{minimize}\limits_{u_1,u_2,...,u_N, x_1,x_2,...,x_{N+1}} T\\
 subject \; to \quad \bold{x_{k+1}} = F(\bold{x_k}, u_k, dt) \quad k=0...N,\\
 \bold{x_0}=init\_state\\
@@ -78,25 +90,33 @@ By minimizing the time $T$, the optimal vehicle steering angles to accomplish th
 
 More implementation details can be found in the source code: [opt.py](https://github.com/chentairan/EE7207_CA2/blob/master/opt.py)
 
-### D. Experiment
 
-In this subsection, the results of three different controller with different initial states are shown in Fig 1.2-5.
 
-<img src="./image/init1.png" alt="xy"  />
 
-<center>Fig. 1.2 Initial state 1, top-left: x-y, top-right: y-t, bottom-left: &theta;-t, bottom-right: u-t<center>
-<img src="./image/init2.png" alt="y"  />
 
-<center>Fig. 1.3 Initial state 2, top-left: x-y, top-right: y-t, bottom-left: &theta;-t, bottom-right: u-t<center>
-<img src="./image/init3.png" alt="theta"  />
+### E. Experiment
+
+In this subsection, the results of four different controller with different initial states are shown in Fig 1.2-5.
+
+<img src="./image/init1.png" alt="xy" style="zoom:150%;" />
+
+<center><b>Fig. 1.2 Initial state 1, top-left: x-y, top-right: y-t, bottom-left: &theta;-t, bottom-right: u-t</b></center>
+<img src="./image/init2.png" alt="y" style="zoom:150%;" />
+
+<center><b>Fig. 1.3 Initial state 2, top-left: x-y, top-right: y-t, bottom-left: &theta;-t, bottom-right: u-t</b></center>
+<img src="./image/init3.png" alt="theta" style="zoom:150%;" />
+
 
 <center>Fig. 1.4 Initial state 3, top-left: x-y, top-right: y-t, bottom-left: &theta;-t, bottom-right: u-t<center>
+<img src="./image/init4.png" alt="u" style="zoom:150%;" />
 
-<img src="./image/init4.png" alt="u"  />
+<center><b>Fig. 1.5 Initial state 4, top-left: x-y, top-right: y-t, bottom-left: &theta;-t, bottom-right: u-t</b></center>
 
-<center>Fig. 1.5 Initial state 4, top-left: x-y, top-right: y-t, bottom-left: &theta;-t, bottom-right: u-t<center>
+### F. Discussion
 
-In these figures, it can be seen that **Fuzzy Control** continues down/up after reaching y=0 and thus there is **overshoot** in fuzzy control. But **NMPC** and **Optimal Control** do **not have overshoot** phenomena. This is because NMPC and Optimal Control include the **vehicle's motion model**, which allows for better prediction for the next control. The **horizon** of Optimal Control is **infinite**, while NMPC has only a finite number $N$, which causes the convergence performance of NMPC to be worse than that of Optimal Control but better than that of Fuzzy Control. Since the objective function of the Optimal Control is overall time $T$, it is the fastest to reach the parking station.
+In these **Figures(1.2-1.5)**, it can be observed that **Fuzzy Control** and **P Control** continue down/up after reaching y=0 which means **overshoot**. But **NMPC** and **Optimal Control** do **not have these overshoot** phenomena. That is because NMPC and Optimal Control include the **vehicle's motion model**, which allows for better prediction for the next control. In the meanwhile, the **horizon** of Optimal Control is **infinite**, while NMPC has only a finite number $N$, which causes the convergence performance of NMPC to be worse than that of Optimal Control but better than those of Fuzzy Control and P Control. Since the objective function of the Optimal Control is overall time $T$, it is the fastest to reach the parking station.
+
+I also find that fuzzy control has better performance than P control. This is because fuzzy control uses fuzzy rules for different levels of vehicle steering, which can make the controller overshoot alleviate. Finally, the best part is that fuzzy control does not require much control experience.
 
 
 More implementation details can be found in the source code: [metrics.py](https://github.com/chentairan/EE7207_CA2/blob/master/metrics.py)
